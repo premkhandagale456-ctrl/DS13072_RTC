@@ -12,3 +12,40 @@ Thumbs.db
 *.log
 *.tmp
 *.bin
+
+# ESP-IDF build files
+build/
+sdkconfig
+sdkconfig.old
+
+# ESP-IDF dependency folders
+components/*/build/
+managed_components/
+
+# Visual Studio Code settings
+.vscode/
+.idea/
+
+# Python virtual environments
+venv/
+.env/
+__pycache__/
+
+# Compiled object files
+*.o
+*.obj
+*.elf
+*.map
+*.bin
+
+# Log and temporary files
+*.log
+*.tmp
+
+# Backup and generated files
+*~
+*.bak
+
+# IDF-specific
+.project
+.settings/
