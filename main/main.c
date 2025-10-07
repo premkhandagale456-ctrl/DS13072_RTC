@@ -12,34 +12,51 @@ static const char *TAG = "RTC";
 
 void app_main(void)
 {
-  DS1307_Handler_t Handler;
-  DS1307_DateTime_t DateTime =
+  DS13072_Handler_t Handler;
+  // set the date and time
+  DS13072_DateTime_t DateTime =
   {
     .Second   = 0,
     .Minute   = 52,
-    .Hour     = 4,
+    .Hour     = 20,
     .WeekDay  = 1,
     .Day      = 06,
     .Month    = 10,
-    .Year     = 25
+    .Year     = 25,
+    .HourMode = 0, // 0 = 24-hour mode, 1 = 12-hour mode
+    .isPM     = 1  // 1 = PM , 0 = AM
   };
 
-  ESP_LOGI(TAG, "DS1307 Driver Example");
-
-  DS1307_Platform_Init(&Handler);
-  DS1307_Init(&Handler);
-  DS1307_SetDateTime(&Handler, &DateTime);
-  DS1307_SetOutWave(&Handler, DS1307_OutWave_1Hz);
+  DS13072_Platform_Init(&Handler);
+  DS13072_Init(&Handler);
+  if(DS13072_SetDateTime(&Handler, &DateTime) != ESP_OK){
+     ESP_LOGI(TAG, "Failed to set date and time");
+  }
+  DS13072_SetOutWave(&Handler, DS13072_OutWave_1Hz);
 
   while (1)
   {
-    DS1307_GetDateTime(&Handler, &DateTime);
-    ESP_LOGI(TAG, "Date: 20%02u/%02u/%02u", DateTime.Year, DateTime.Month, DateTime.Day);
-    ESP_LOGI(TAG, "Time: %02u:%02u:%02u", DateTime.Hour, DateTime.Minute, DateTime.Second);
-    ESP_LOGI(TAG, "WeekDay: %u", DateTime.WeekDay);
+    if(DS13072_GetDateTime(&Handler, &DateTime) == DS13072_OK){
+
+      if(DateTime.HourMode == 1){
+        // Convert isPM to string for printing
+        const char *ampm = (DateTime.isPM) ? "PM" : "AM";
+        ESP_LOGI(TAG, "Date: %02u/%02u/%02u", DateTime.Day, DateTime.Month, DateTime.Year);
+        ESP_LOGI(TAG, "Time: %02u:%02u:%02u %s", DateTime.Hour, DateTime.Minute, DateTime.Second, ampm);
+        ESP_LOGI(TAG, "WeekDay: %u", DateTime.WeekDay);
+      }
+      else{
+        ESP_LOGI(TAG, "Date: %02u/%02u/%02u", DateTime.Day, DateTime.Month, DateTime.Year);
+        ESP_LOGI(TAG, "Time: %02u:%02u:%02u", DateTime.Hour, DateTime.Minute, DateTime.Second);
+        ESP_LOGI(TAG, "WeekDay: %u", DateTime.WeekDay);
+      }
+
+    }else{
+      ESP_LOGI(TAG, "RTC not detected!! check RTC connected or not");
+    }
 
     vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 
-  DS1307_DeInit(&Handler);
+  DS13072_DeInit(&Handler);
 }

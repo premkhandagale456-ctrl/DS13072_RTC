@@ -1,8 +1,8 @@
 /**
  **********************************************************************************
- * @file   DS1307_platform.h
+ * @file   DS13072_platform.h
  * @author Hossein.M (https://github.com/Hossein-M98)
- * @brief  DS1307 chip driver platform dependent part
+ * @brief  DS13072 chip driver platform dependent part
  *         Functionalities of the this file:
  *          + Initialization the platform-dependent part of handler
  **********************************************************************************
@@ -44,10 +44,10 @@ extern "C" {
 
 
 /* Functionality Options --------------------------------------------------------*/
-#define DS1307_I2C_NUM   I2C_NUM_0
-#define DS1307_I2C_RATE  100000
-#define DS1307_SCL_GPIO  GPIO_NUM_9
-#define DS1307_SDA_GPIO  GPIO_NUM_8
+#define DS13072_I2C_NUM   I2C_NUM_0
+#define DS13072_I2C_RATE  100000
+#define DS13072_SCL_GPIO  GPIO_NUM_9
+#define DS13072_SDA_GPIO  GPIO_NUM_8
 
 
 
@@ -58,12 +58,12 @@ extern "C" {
  */
 
 /**
- * @brief  Initialize platform device to communicate DS1307.
+ * @brief  Initialize platform device to communicate DS13072.
  * @param  Handler: Pointer to handler
  * @retval None
  */
 void
-DS1307_Platform_Init(DS1307_Handler_t *Handler);
+DS13072_Platform_Init(DS13072_Handler_t *Handler);
 
 
 #ifdef __cplusplus
@@ -71,4 +71,4 @@ DS1307_Platform_Init(DS1307_Handler_t *Handler);
 #endif
 
 
-#endif //! _DS1307_PLATFORM_H_
+#endif //! _DS13072_PLATFORM_H_
